@@ -1,0 +1,14 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Local file with api keys
+Keys.kt
+# Project exclude paths
+/.gradle/
+/build/
