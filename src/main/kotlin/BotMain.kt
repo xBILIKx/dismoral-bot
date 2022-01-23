@@ -1,3 +1,5 @@
+import Extensions.MyHelpExtension
+import Extensions.TestExtension
 import com.kotlindiscord.kord.extensions.ExtensibleBot
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.Kord
@@ -22,10 +24,10 @@ suspend fun main() {
         }
         extensions {
             add(::TestExtension)
-            add(::SendPhotoExtension)
             add(::MyHelpExtension)
             help{
                 color { Constants.EMBED_COLOR }
+                enableBundledExtension = false
             }
         }
     }
@@ -34,7 +36,7 @@ suspend fun main() {
     bot.start()
 }
 
-suspend fun MessageChannelBehavior.createEmbed(_description: String, user: User?,
+suspend fun MessageChannelBehavior.createEmbed(_description: String, user: User? = null,
                                                commandDescription: String, time: Instant? = null,
                                                imageUrl: String? = null){
     this.createEmbed {
