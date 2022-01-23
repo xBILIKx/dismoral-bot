@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
 }
 
-group = "me.xbilikx"
+group = "me.xbilikx.dismoralbot"
 version = "1.0-SNAPSHOT"
 
 repositories {

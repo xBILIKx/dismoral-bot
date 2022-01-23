@@ -1,4 +1,4 @@
-package Extensions
+package me.xbilikx.dismoralbot.extensions
 
 import com.kotlindiscord.kord.extensions.builders.ExtensibleBotBuilder
 import com.kotlindiscord.kord.extensions.commands.Arguments
