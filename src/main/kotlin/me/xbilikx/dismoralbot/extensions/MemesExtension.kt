@@ -1,9 +1,9 @@
-package Extensions
+package me.xbilikx.dismoralbot.extensions
 
 import com.kotlindiscord.kord.extensions.extensions.Extension
 
-class BotSettingsExtension: Extension() {
-    override val name: String = "settings"
+class MemesExtension: Extension() {
+    override val name: String = "memes"
 
     override suspend fun setup() {
         TODO("Not yet implemented")

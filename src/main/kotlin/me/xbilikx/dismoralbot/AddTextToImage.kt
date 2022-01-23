@@ -1,3 +1,5 @@
+package me.xbilikx.dismoralbot
+
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
@@ -5,7 +7,6 @@ import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
-import java.net.URL
 import javax.imageio.ImageIO
 
 

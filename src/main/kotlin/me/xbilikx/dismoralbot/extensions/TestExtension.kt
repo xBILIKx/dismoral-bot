@@ -1,20 +1,14 @@
-package Extensions
+package me.xbilikx.dismoralbot.extensions
 
-import AddTextImage
+import me.xbilikx.dismoralbot.AddTextImage
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.chatCommand
 import com.kotlindiscord.kord.extensions.utils.respond
-import createEmbed
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.rest.NamedFile
-import dev.kord.rest.builder.message.EmbedBuilder
 import java.awt.Color
 import java.awt.Font
 import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.function.Consumer
 
 
 class TestExtension: Extension() {
@@ -47,7 +41,7 @@ class TestExtension: Extension() {
             action {
                 message.delete()
                 val channel = message.channel
-//                channel.createEmbed("asdasd", message.author, commandDescription, message.timestamp)
+//                channel.me.xbilikx.dismoralbot.createEmbed("asdasd", message.author, commandDescription, message.timestamp)
                 val img = AddTextImage(
                     "meta-files\\memes\\Sonic.png", Color.WHITE, Font.BOLD, "Arial",
                     "left-text-mode", "Temp.png"

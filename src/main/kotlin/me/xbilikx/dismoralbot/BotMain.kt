@@ -1,5 +1,7 @@
-import Extensions.MyHelpExtension
-import Extensions.TestExtension
+package me.xbilikx.dismoralbot
+
+import me.xbilikx.dismoralbot.extensions.MyHelpExtension
+import me.xbilikx.dismoralbot.extensions.TestExtension
 import com.kotlindiscord.kord.extensions.ExtensibleBot
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.Kord
@@ -10,10 +12,10 @@ import kotlinx.datetime.Instant
 import org.koin.core.component.get
 
 lateinit var botClient: User
-private set
+    private set
 
 suspend fun main() {
-    val bot = ExtensibleBot(Keys.API_KEY){
+    val bot = ExtensibleBot(Constants.BOT_TOKEN){
         chatCommands {
             defaultPrefix = "?"
             enabled = true
