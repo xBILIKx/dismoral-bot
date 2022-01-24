@@ -1,5 +1,8 @@
 package me.xbilikx.dismoralbot
 
+import me.xbilikx.dismoralbot.Constants.CENTER_TEXT_MODE
+import me.xbilikx.dismoralbot.Constants.LEFT_TEXT_MODE
+import me.xbilikx.dismoralbot.Constants.RIGHT_TEXT_MODE
 import java.awt.AlphaComposite
 import java.awt.Color
 import java.awt.Font
@@ -11,18 +14,13 @@ import javax.imageio.ImageIO
 
 
 class AddTextImage(path: String, _color: Color,
-                   _type: Int, _font: String, _mode: String,
+                   _mode: String, _size: Int,
                    _fileName: String) {
     private var fileName: String = _fileName
 
     private var color: Color = _color
-    private var type = _type
     private var mode: String = _mode
-    private var font: String = _font
-
-    public val LEFT_TEXT_MODE = "left-text-mode"
-    public val RIGHT_TEXT_MODE = "right-text-mode"
-    public val CENTER_TEXT_MODE = "center-text-mode"
+    private val font = Font("Arial", Font.BOLD, _size)
 
     private var bufferedImage: BufferedImage
 
@@ -52,7 +50,7 @@ class AddTextImage(path: String, _color: Color,
         return newImage
     }
 
-    fun save(): String? {
+    fun save(): String {
         return saveImage(File(fileName))
     }
 
@@ -66,14 +64,14 @@ class AddTextImage(path: String, _color: Color,
     }
 
     fun addTextToImage(
-        topX: Int, topY: Int,
-        zoneW: Int, zoneH: Int?, size: Int, text: String
+        topX: Int, _topY: Int,
+        zoneW: Int, zoneH: Int?, text: String
     ) {
-        var topY = topY
+        var topY = _topY
         val g = bufferedImage.createGraphics()
         g.color = Color.BLACK
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        g.font = Font(font, type, size)
+        g.font = font
         val fontMetrics = g.fontMetrics
         g.dispose()
         val lineHeight = fontMetrics.height
@@ -93,7 +91,7 @@ class AddTextImage(path: String, _color: Color,
             addTextLineToImage(
                 lines[i],
                 topX, lineHeight + topY + i * lineHeight,
-                zoneW, size
+                zoneW
             )
         }
     }
@@ -101,37 +99,36 @@ class AddTextImage(path: String, _color: Color,
     private fun addTextLineToImage(
         text: String,
         topX: Int, topY: Int,
-        zoneW: Int, size: Int
+        zoneW: Int
     ) {
         var topX = topX
         val g = bufferedImage.createGraphics()
         g.color = Color.BLACK
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        g.font = Font(font, type, size)
+        g.font = font
         val fontMetrics = g.fontMetrics
         g.dispose()
         if (mode == LEFT_TEXT_MODE) {
-            addTextToImage(text, topX, topY, font, type, size, color)
+            addTextToImage(text, topX, topY, color)
         } else if (mode == CENTER_TEXT_MODE) {
             topX += (zoneW - fontMetrics.stringWidth(text)) / 2
-            addTextToImage(text, topX, topY, font, type, size, color)
+            addTextToImage(text, topX, topY, color)
         } else if (mode == RIGHT_TEXT_MODE) {
             topX += zoneW - fontMetrics.stringWidth(text)
-            addTextToImage(text, topX, topY, font, type, size, color)
+            addTextToImage(text, topX, topY, color)
         }
     }
 
     private fun addTextToImage(
         text: String,
         topX: Int, topY: Int,
-        font: String, type: Int,
-        size: Int, color: Color
+        color: Color
     ) {
         val g = bufferedImage.createGraphics()
         g.color = color
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
         g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER)
-        g.font = Font(font, type, size)
+        g.font = font
         g.drawString(text, topX, topY)
         g.dispose()
     }

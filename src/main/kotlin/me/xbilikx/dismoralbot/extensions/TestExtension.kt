@@ -1,13 +1,13 @@
 package me.xbilikx.dismoralbot.extensions
 
-import me.xbilikx.dismoralbot.AddTextImage
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.chatCommand
 import com.kotlindiscord.kord.extensions.utils.respond
-import dev.kord.core.behavior.channel.createMessage
-import dev.kord.rest.NamedFile
+import me.xbilikx.dismoralbot.AddTextImage
+import me.xbilikx.dismoralbot.Constants
+import me.xbilikx.dismoralbot.createAwaitEmbed
+import me.xbilikx.dismoralbot.createEmbedMessage
 import java.awt.Color
-import java.awt.Font
 import java.io.File
 
 
@@ -41,17 +41,14 @@ class TestExtension: Extension() {
             action {
                 message.delete()
                 val channel = message.channel
-//                channel.me.xbilikx.dismoralbot.createEmbed("asdasd", message.author, commandDescription, message.timestamp)
                 val img = AddTextImage(
-                    "meta-files\\memes\\Sonic.png", Color.WHITE, Font.BOLD, "Arial",
-                    "left-text-mode", "Temp.png"
+                    Constants.MEMES_PATH+ "Sonic.png", Color.WHITE, Constants.LEFT_TEXT_MODE,
+                    45, "Temp.png"
                 )
-                img.addTextToImage(40, 100, 705, null, 40, message.content)
-                val file = File(img.save()!!)
-                channel.createMessage {
-                    files.add(NamedFile(file.name, file.inputStream()))
-
-                }
+                img.addTextToImage(40, 100, 705, null, message.content.substring(13))
+                val file = File(img.save())
+                channel.createEmbedMessage(null, message.author, "))", message.timestamp,
+                    file.name)
             }
         }
     }
