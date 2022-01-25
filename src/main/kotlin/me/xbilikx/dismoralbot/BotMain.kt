@@ -4,6 +4,7 @@ import com.kotlindiscord.kord.extensions.ExtensibleBot
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.Kord
 import dev.kord.core.entity.User
+import kotlinx.coroutines.runBlocking
 import me.xbilikx.dismoralbot.extensions.MyHelpExtension
 import me.xbilikx.dismoralbot.extensions.TestExtension
 import org.koin.core.component.get
@@ -11,7 +12,7 @@ import org.koin.core.component.get
 lateinit var botClient: User
     private set
 
-suspend fun main() {
+suspend fun botStart() {
     val bot = ExtensibleBot(Constants.BOT_TOKEN){
         chatCommands {
             defaultPrefix = "?"
@@ -33,4 +34,10 @@ suspend fun main() {
 
     botClient = bot.get<Kord>().getSelf()
     bot.start()
+}
+
+fun main(args: Array<String>){
+    runBlocking {
+        botStart()
+    }
 }
