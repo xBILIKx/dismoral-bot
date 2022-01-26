@@ -40,7 +40,7 @@ class TestExtension: Extension() {
                 val channel = message.channel
                 message.delete()
                 val img = AddTextImage(
-                    Constants.MEMES_PATH+ "Sonic.png", Color.WHITE, Constants.LEFT_TEXT_MODE,
+                    Constants.MEMES_PATH+ "Sonic.png", Color.WHITE, Constants.TextMode.LEFT,
                     45, "Temp.png"
                 )
                 img.addTextToImage(40, 100, 705, null, message.content.substring(13))

@@ -1,32 +1,26 @@
 package me.xbilikx.dismoralbot
 
-import me.xbilikx.dismoralbot.Constants.CENTER_TEXT_MODE
-import me.xbilikx.dismoralbot.Constants.LEFT_TEXT_MODE
-import me.xbilikx.dismoralbot.Constants.RIGHT_TEXT_MODE
-import java.awt.AlphaComposite
-import java.awt.Color
-import java.awt.Font
-import java.awt.RenderingHints
+import java.awt.*
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
 
 
-class AddTextImage(path: String, _color: Color,
-                   _mode: String, _size: Int,
-                   _fileName: String) {
-    private var fileName: String = _fileName
-
-    private var color: Color = _color
-    private var mode: String = _mode
-    private val font = Font("Arial", Font.BOLD, _size)
+class AddTextImage(path: String, color: Color,
+                   private val mode: Constants.TextMode, size: Int,
+                   private val fileName: String) {
 
     private var bufferedImage: BufferedImage
-
+    private var g: Graphics2D
 
     init {
-        this.bufferedImage = ImageIO.read(File(path));
+        this.bufferedImage = ImageIO.read(File(path))
+        g = bufferedImage.createGraphics()
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
+        g.font = Font("Arial", Font.BOLD, size)
+        g.color = color
+        g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER)
     }
 
     private fun uniteImage(img1: BufferedImage, img2: BufferedImage): BufferedImage {
@@ -68,12 +62,7 @@ class AddTextImage(path: String, _color: Color,
         zoneW: Int, zoneH: Int?, text: String
     ) {
         var topY = _topY
-        val g = bufferedImage.createGraphics()
-        g.color = Color.BLACK
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        g.font = font
         val fontMetrics = g.fontMetrics
-        g.dispose()
         val lineHeight = fontMetrics.height
         val words = text.split(" ").toTypedArray()
         val line = StringBuilder()
@@ -89,47 +78,21 @@ class AddTextImage(path: String, _color: Color,
         if (zoneH != null) topY += (zoneH / 2) - ((lineHeight * lines.size) / 2)
         for (i in lines.indices) {
             addTextLineToImage(
-                lines[i],
+                fontMetrics, lines[i],
                 topX, lineHeight + topY + i * lineHeight,
                 zoneW
             )
         }
+        g.dispose()
     }
 
     private fun addTextLineToImage(
-        text: String,
+        fontMetrics: FontMetrics, text: String,
         topX: Int, topY: Int,
         zoneW: Int
-    ) {
-        var topX = topX
-        val g = bufferedImage.createGraphics()
-        g.color = Color.BLACK
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        g.font = font
-        val fontMetrics = g.fontMetrics
-        g.dispose()
-        if (mode == LEFT_TEXT_MODE) {
-            addTextToImage(text, topX, topY, color)
-        } else if (mode == CENTER_TEXT_MODE) {
-            topX += (zoneW - fontMetrics.stringWidth(text)) / 2
-            addTextToImage(text, topX, topY, color)
-        } else if (mode == RIGHT_TEXT_MODE) {
-            topX += zoneW - fontMetrics.stringWidth(text)
-            addTextToImage(text, topX, topY, color)
+    ) = when(mode){
+            Constants.TextMode.LEFT -> g.drawString(text, topX, topY)
+            Constants.TextMode.CENTER -> g.drawString(text, topX + (zoneW - fontMetrics.stringWidth(text)) / 2, topY)
+            Constants.TextMode.RIGHT -> g.drawString(text, topX + (zoneW - fontMetrics.stringWidth(text)), topY)
         }
-    }
-
-    private fun addTextToImage(
-        text: String,
-        topX: Int, topY: Int,
-        color: Color
-    ) {
-        val g = bufferedImage.createGraphics()
-        g.color = color
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        g.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER)
-        g.font = font
-        g.drawString(text, topX, topY)
-        g.dispose()
-    }
 }

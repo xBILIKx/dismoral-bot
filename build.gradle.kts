@@ -22,7 +22,7 @@ dependencies {
     implementation("dev.kord:kord-core:0.8.0-M8")
     implementation("com.kotlindiscord.kord.extensions:kord-extensions:1.5.1-RC1")
     implementation("org.slf4j:slf4j-simple:1.7.33")
-//    implementation("clojure-interop:java.awt:1.0.2")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 application {
@@ -39,4 +39,12 @@ tasks.jar {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
